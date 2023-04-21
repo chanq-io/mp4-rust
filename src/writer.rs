@@ -92,6 +92,18 @@ impl<W: Write + Seek> Mp4Writer<W> {
         Ok(())
     }
 
+    pub fn add_track_with_edts(
+        &mut self,
+        config: &TrackConfig,
+        edts: Option<edts::EdtsBox>,
+    ) -> Result<()> {
+        let track_id = self.tracks.len() as u32 + 1;
+        let mut track = Mp4TrackWriter::new(track_id, config)?;
+        track.update_edts(edts);
+        self.tracks.push(track);
+        Ok(())
+    }
+
     fn update_durations(&mut self, track_dur: u64) {
         if track_dur > self.duration {
             self.duration = track_dur;

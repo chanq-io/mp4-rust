@@ -636,6 +636,10 @@ impl Mp4TrackWriter {
         })
     }
 
+    pub fn update_edts(&mut self, edts: Option<edts::EdtsBox>) {
+        self.trak.edts = edts;
+    }
+
     fn update_sample_sizes(&mut self, size: u32) {
         if self.trak.mdia.minf.stbl.stsz.sample_count == 0 {
             if size == 0 {
